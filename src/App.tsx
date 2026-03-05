@@ -125,7 +125,8 @@ export default function App() {
     const statuses = [
       "Step 1: Strategic Planning - Defining Theme & Flaws...",
       "Step 2: Document Synthesis - Generating Formal Briefing...",
-      "Step 3: Finalizing - Structuring Content..."
+      "Step 3: Subtlety Refinement - Obfuscating Strategic Flaws...",
+      "Step 4: Finalizing - Structuring Content..."
     ];
     
     setLogs([{ timestamp: getZuluTimestamp(), event: "SESSION_INITIALIZED", details: `Session ID: ${sid}` }]);
@@ -217,7 +218,7 @@ Return your plan as a JSON object:
       addLog("API_CALL_PHASE_2_INITIATED", "Requesting full document synthesis based on the approved plan...");
 
       const synthesisPrompt = `
-Based on the following strategic plan, write a full formal Strategic Document for the UK Ministry of Defence.
+Based on the following strategic plan, write a full formal Strategic Document for the UK Ministry of Defence. This will be used to assess trained, professional military red-teamers.
 
 PLAN:
 Theme: ${plan.documentTheme}
@@ -230,6 +231,8 @@ REQUIREMENTS:
 2. Use UK-specific terminology and reflect the tone of a formal document issued by the UK MOD.
 3. Use rich Markdown formatting (headings ##, subheadings ###, bulleted lists).
 4. Ensure the planned flaws are woven seamlessly into the logic of the document, as if the document is finalised and approved for release.
+5. When writing, keep in mind that any flaws that are obvious or easy for a professional red-teamer to identify are not useful. This is an examination, and should be appropriately challenging.
+6. Avoid absolute statements. Terms like "entirely", "exclusively", "totally", etc, make flaws easily identifiable. Documents are rarely written in absolute terms.
 
 Return the final document as a JSON object:
 {
@@ -276,9 +279,78 @@ Return the final document as a JSON object:
       });
 
       addLog("API_RESPONSE_PHASE_2_RECEIVED", synthesisResponse.text);
-      const data = JSON.parse(synthesisResponse.text);
+      const initialData = JSON.parse(synthesisResponse.text);
+
+      // PHASE 3: SUBTLETY REFINEMENT
+      addLog("API_CALL_PHASE_3_INITIATED", "Requesting subtlety refinement pass to obfuscate flaws...");
+
+      const refinementPrompt = `
+You are a senior strategic editor for the UK Ministry of Defence. 
+You have been provided with a draft Strategic Document that contains specific intentional flaws for a red-teaming exercise.
+
+DRAFT DOCUMENT:
+Title: ${initialData.title}
+Content: ${initialData.content}
+
+PLANNED FLAWS:
+${initialData.errors.map((e: any, i: number) => `${i+1}. ${e.errorType}: ${e.errorDescription}`).join('\n')}
+
+YOUR TASK:
+1. Assess the draft document. Are the flaws too obvious? Would a professional, experienced military red-teamer identify them immediately?
+2. Rewrite the document to make these specific flaws significantly more subtle. 
+3. The goal is to "beat" the red team. The flaws must remain logically present and fatal, but they should be buried within professional-sounding strategic logic, jargon, and reasonable-sounding assumptions.
+4. Ensure the tone is indistinguishable from a real, high-level MOD publication.
+5. Do NOT remove the flaws. They must remain, but their presentation must be obfuscated.
+6. Maintain the length (800-1,200 words) and Markdown formatting.
+
+Return the refined document as a JSON object:
+{
+  "title": "The formal title of the document",
+  "content": "The refined Markdown text of the document",
+  "errors": [
+    {
+      "errorType": "Type of error",
+      "errorDescription": "Updated description of the flaw as it now appears in the refined text",
+      "justification": "Why this is a fatal issue"
+    }
+  ]
+}
+      `;
+
+      addLog("PROMPT_PHASE_3", refinementPrompt);
+
+      const refinementResponse = await ai.models.generateContent({
+        model: 'gemini-3.1-pro-preview',
+        contents: refinementPrompt,
+        config: {
+          responseMimeType: 'application/json',
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              title: { type: Type.STRING },
+              content: { type: Type.STRING },
+              errors: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    errorType: { type: Type.STRING },
+                    errorDescription: { type: Type.STRING },
+                    justification: { type: Type.STRING },
+                  },
+                  required: ['errorType', 'errorDescription', 'justification'],
+                }
+              }
+            },
+            required: ['title', 'content', 'errors'],
+          },
+        },
+      });
+
+      addLog("API_RESPONSE_PHASE_3_RECEIVED", refinementResponse.text);
+      const refinedData = JSON.parse(refinementResponse.text);
       
-      setDocumentData(data);
+      setDocumentData(refinedData);
       clearInterval(statusInterval);
       setAppState('active');
       addLog("TEST_TIMER_STARTED", "10:00 countdown initiated.");
