@@ -43,7 +43,27 @@ const STRATEGIC_TOPICS = [
   "Foresight: Demographic Shifts and Instability",
   "Foresight: Evolving and Opportunistic Hostile Alignments",
   "Foresight: Erosion of Nuclear Non-Proliferation",
-  "Foresight: The Enduring Threat of Terrorism"
+  "Foresight: The Enduring Threat of Terrorism",
+  "Strategy: The 3% GDP Defence Pathway",
+  "Strategy: The High North and Arctic Pivot",
+  "Strategy: Regional Defence Growth Deals",
+  "Strategy: Military Strategic Headquarters (MSHQ) Reform",
+  "Strategy: The National Armaments Director Mandate",
+  "Strategy: Sovereign Capability Retention",
+  "Concept: The Hybrid Navy and Air Wing",
+  "Concept: Techcraft: Fieldcraft-AI Fusion",
+  "Concept: The Cyber and Electromagnetic (CyberEM) Command",
+  "Concept: The Strategic Reserve Corps",
+  "Concept: The Sovereign Warhead Programme",
+  "Concept: Segmented Procurement Framework",
+  "Concept: Persistent Engagement and Forward Presence",
+  "Foresight: Digital Enclaves and Eroding Sovereignty",
+  "Foresight: Proliferation of Weapons of Mass Effect",
+  "Foresight: Space as a Contested Global Common",
+  "Foresight: Domestic Polarisation and Resilience Gaps",
+  "Foresight: The Human Enhancement Ethical Frontier",
+  "Foresight: Urbanisation and Littoral Conflict Complexity",
+  "Foresight: Supply Chain Weaponisation and Autarky"
 ];
 
 const ERROR_TYPES = [
@@ -86,7 +106,27 @@ const ERROR_TYPES = [
   "Correlation-Causation Fallacy",
   "Counter-Intuition Rejection",
   "Quantifaction Fallacy",
-  "Cherry-Picking Data"
+  "Cherry-Picking Data",
+  "Capabilities-Based Planning Trap",
+  "Gold-Plating Fallacy",
+  "Adversary De-personalisation",
+  "Bureaucratic Inertia",
+  "Single Scenario Fallacy",
+  "Strategic Solipsism",
+  "McNamara Fallacy",
+  "Asymmetry Blindness",
+  "C2 Hyper-Centralisation",
+  "Silver Bullet Delusion",
+  "Just-in-Time Fragility",
+  "Kinetic Bias",
+  "Strategic Ambiguity Fatigue",
+  "Say-Do Gap",
+  "Echo-Chamber Validation",
+  "Institutional Amnesia",
+  "Political-Military Decoupling",
+  "Over-classification Stagnation",
+  "Assessment Deflation",
+  "Technological Determinism"
 ];
 
 export default function App() {
@@ -132,7 +172,7 @@ export default function App() {
     setLogs([{ timestamp: getZuluTimestamp(), event: "SESSION_INITIALIZED", details: `Session ID: ${sid}` }]);
     
     // Random Calculations
-    const topicIndex = Math.floor(Math.random() * 20);
+    const topicIndex = Math.floor(Math.random() * STRATEGIC_TOPICS.length);
     const selectedTopic = STRATEGIC_TOPICS[topicIndex];
     const errorCount = Math.floor(Math.random() * 5) + 1;
     
