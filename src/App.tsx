@@ -46,6 +46,49 @@ const STRATEGIC_TOPICS = [
   "Foresight: The Enduring Threat of Terrorism"
 ];
 
+const ERROR_TYPES = [
+  "Ends-Ways-Means Mismatch",
+  "Strategic Narcissism",
+  "Vague End-States",
+  "Over-extension",
+  "Static Planning",
+  "Technology Over-reliance",
+  "Interoperability Gaps",
+  "Doctrine-Reality Lag",
+  "Jargon Densification",
+  "Ahistorical Assumptions",
+  "Mirror Imaging",
+  "Linear Projection",
+  "Groupthink",
+  "Probability Blindness",
+  "Recency Bias",
+  "Confirmation Bias",
+  "Availability Heuristic",
+  "Anchor Bias",
+  "Sunk Cost Fallacy",
+  "Fatigue-Induced Oversight",
+  "Diffusion of Responsibility",
+  "Optimism Bias",
+  "False Dilemma Framing",
+  "Logistics Under-estimation",
+  "Cultural Insensitivity",
+  "Mission Creep",
+  "Circular Reporting",
+  "Survivorship Bias",
+  "Normalisation of Deviance",
+  "Policy-Intelligence Decoupling",
+  "Scope Creep",
+  "False Consensus Effect",
+  "Information Overload Paralysis",
+  "Anecdotal Evidence Reliance",
+  "Definitional Inconsistency",
+  "Temporal Myopia",
+  "Correlation-Causation Fallacy",
+  "Counter-Intuition Rejection",
+  "Quantifaction Fallacy",
+  "Cherry-Picking Data"
+];
+
 export default function App() {
   const [appState, setAppState] = useState<AppState>('setup');
   const [documentData, setDocumentData] = useState<DocumentData | null>(null);
@@ -92,7 +135,11 @@ export default function App() {
     const selectedTopic = STRATEGIC_TOPICS[topicIndex];
     const errorCount = Math.floor(Math.random() * 5) + 1;
     
-    addLog("CALCULATION_PERFORMED", `Selected Topic: [${topicIndex + 1}] ${selectedTopic}\nTarget Error Count: ${errorCount}`);
+    // Pick 5 random error types from the pool
+    const shuffledErrors = [...ERROR_TYPES].sort(() => 0.5 - Math.random());
+    const selectedErrorPool = shuffledErrors.slice(0, 5);
+    
+    addLog("CALCULATION_PERFORMED", `Selected Topic: [${topicIndex + 1}] ${selectedTopic}\nTarget Error Count: ${errorCount}\nError Pool: ${selectedErrorPool.join(', ')}`);
     addLog("GENERATION_STARTED", "Initiating multi-stage strategic document synthesis...");
     
     let statusIndex = 0;
@@ -116,7 +163,8 @@ Your task is to plan a Strategic Document (Strategy, Concept, or Foresight Asses
 CRITICAL CONSTRAINTS:
 1. The strategic concept must NOT be centered around Artificial Intelligence (AI), Machine Learning, or autonomous cyber systems.
 2. You must plan exactly ${errorCount} subtle, logical, or foundational flaws to inject into the final document.
-3. These flaws must be internally consistent but logically fatal, appropriate to the context of the document being written.
+3. You MUST select these flaws from the following pool of error types: ${selectedErrorPool.join(', ')}.
+4. These flaws must be internally consistent but logically fatal, appropriate to the context of the document being written.
 
 Return your plan as a JSON object:
 {
@@ -124,7 +172,7 @@ Return your plan as a JSON object:
   "outline": ["Section 1 focus", "Section 2 focus", "..."],
   "plannedErrors": [
     {
-      "errorType": "Type of error",
+      "errorType": "Type of error (MUST be from the provided pool)",
       "errorDescription": "Detailed description of how this flaw will be manifested",
       "justification": "Why this is a fatal issue"
     }
