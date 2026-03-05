@@ -162,9 +162,9 @@ Your task is to plan a Strategic Document (Strategy, Concept, or Foresight Asses
 
 CRITICAL CONSTRAINTS:
 1. The strategic concept must NOT be centered around Artificial Intelligence (AI), Machine Learning, or autonomous cyber systems.
-2. You must plan exactly ${errorCount} subtle, logical, or foundational flaws to inject into the final document.
+2. You must plan exactly ${errorCount} flaws to inject into the final document.
 3. You MUST select these flaws from the following pool of error types: ${selectedErrorPool.join(', ')}.
-4. These flaws must be internally consistent but logically fatal, appropriate to the context of the document being written.
+4. These flaws must be internally consistent and included subtly, appropriate to the context of the document being written.
 
 Return your plan as a JSON object:
 {
