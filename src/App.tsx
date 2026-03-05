@@ -229,7 +229,7 @@ REQUIREMENTS:
 1. The document should be approximately 800–1,200 words.
 2. Use UK-specific terminology and reflect the tone of a formal document issued by the UK MOD.
 3. Use rich Markdown formatting (headings ##, subheadings ###, bulleted lists).
-4. Ensure the planned flaws are woven seamlessly into the logic of the document so they are subtle but identifiable by a professional.
+4. Ensure the planned flaws are woven seamlessly into the logic of the document, as if the document is finalised and approved for release.
 
 Return the final document as a JSON object:
 {
